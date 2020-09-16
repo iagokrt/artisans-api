@@ -26,18 +26,16 @@
 
 1. Database Configuration - Docker & TypeORM
 2. Routes Configuration - Auth & Token
-3. Linting Configuration - Eslint & Prettier
-4.
 
-## ~~~~~**Database Configuration**~~~~~
+## **Database Configuration**
 
 Docker + TypeORM
 
 O **Docker** é um container de banco de dados relacional.
 
-Através de uma interface visual pode ser visualizado bancos e tabelas do banco que o container docker roda prá gente.
+Através de uma interface visual é possível acessar o banco de dados relacionado a esse container e ter acesso à todas as tabelas e informações contidas no banco.
 
-E.g.: Eu uso o PostBird, mas existem diversas outras opções.
+Abaixo o arquivo que faz a configuração do ORM com o banco relacional PostgreSQL.
 
 ~ **ormconfig.json**
 
@@ -61,14 +59,16 @@ E.g.: Eu uso o PostBird, mas existem diversas outras opções.
 }
 ```
 
-O **TypeORM** nos ajuda a lidar com as migrations no banco de dados.
+
+O **TypeORM** fornece diversas maneiras para lidar com as informações no banco.
+Como por exemplo, criar uma tabela, cadastrar chaves estrangeiras para relacionamento entre tabelas; E todas outras operações.
 
 ```jsx
 // Certifique-se de configurar o arquivo ormconfig-json.
 // Certifique-se de estar rodando o banco de dados.
 ```
 
-Cadastrando uma nova Entidade são **duas etapas** principais:
+Cadastrando uma nova Entidade:
 
 1. Configurar uma **migration**. Em ***@*shared/typeorm**
 2. Criar a entidade (Object-Model). Em **@modules/***artisans***/infra/typeorm/entities**
@@ -112,7 +112,7 @@ export default Artisan;
 
 ---
 
-## ~~~~~**Routes Configuration**~~~~~
+## **Routes Configuration**
 
 **Autenticação**: (AuthService + sessions.routes + authConfig)
 
