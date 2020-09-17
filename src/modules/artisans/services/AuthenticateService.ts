@@ -1,10 +1,14 @@
 import { injectable, inject } from "tsyringe";
-import { compare } from "bcryptjs";
+
 import { sign } from "jsonwebtoken";
 import authConfig from "@config/auth";
+
 import AppError from "@shared/errors/AppError";
+
 import Artisan from "../infra/typeorm/entities/Artisan";
 import IArtisansRepository from "../repositories/IArtisansRepository";
+
+import IHashProvider from "../providers/HashProvider/models/IHashProvider";
 
 interface Request {
   email: string;
@@ -20,7 +24,10 @@ interface Response {
 class AuthenticateService {
   constructor(
     @inject("ArtisansRepository")
-    private artisansRepository: IArtisansRepository
+    private artisansRepository: IArtisansRepository,
+
+    @inject("HashProvider")
+    private hashProvider: IHashProvider
   ) {}
 
   public async execute({ email, password }: Request): Promise<Response> {
@@ -30,7 +37,10 @@ class AuthenticateService {
       throw new AppError("Authentication Error", 401);
     }
 
-    const trustedPassword = await compare(password, artisan.password);
+    const trustedPassword = await this.hashProvider.compareHash(
+      password,
+      artisan.password
+    );
 
     if (!trustedPassword) {
       throw new AppError("Authentication Error", 401);

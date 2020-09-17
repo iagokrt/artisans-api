@@ -1,10 +1,11 @@
 import { injectable, inject } from "tsyringe";
-import { hash } from "bcryptjs";
 
 import AppError from "@shared/errors/AppError";
 
 import Artisan from "../infra/typeorm/entities/Artisan";
 import IArtisansRepository from "../repositories/IArtisansRepository";
+
+import IHashProvider from "../providers/HashProvider/models/IHashProvider";
 
 interface Request {
   name: string;
@@ -18,7 +19,10 @@ interface Request {
 class CreateArtisanService {
   constructor(
     @inject("ArtisansRepository")
-    private artisansRepository: IArtisansRepository
+    private artisansRepository: IArtisansRepository,
+
+    @inject("HashProvider")
+    private hashProvider: IHashProvider
   ) {}
 
   public async execute({
@@ -36,12 +40,12 @@ class CreateArtisanService {
       throw new AppError("Email is already in use");
     }
 
-    const bcryptedPassword = await hash(password, 8);
+    const encryptedPassword = await this.hashProvider.generateHash(password);
 
     const artisan = await this.artisansRepository.create({
       name,
       email,
-      password: bcryptedPassword,
+      password: encryptedPassword,
       cpf,
       birthday,
     });
