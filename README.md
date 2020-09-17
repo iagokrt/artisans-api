@@ -1,196 +1,79 @@
-# # Fazenda-db
-
+# Artisans API
 ```
-          .=     ,        =.
-  _  _   /'/    )\,/,/(_   \ \
-   `//-.|  (  ,\\)\//\)\/_  ) |
-   //___\   `\\\/\\/\/\\///'  /
-,-"~`-._ `"--'_   `"""`  _ \`'"~-,_
-\       `-.  '_`.      .'_` \ ,-"~`/
- `.__.-'`/   (-\        /-) |-.__,'
-   ||   |     \O)  /^\ (O/  |
-   `\\  |         /   `\    /
-     \\  \       /      `\ /
-      `\\ `-.  /' .---.--.\
-        `\\/`~(, '()      ('
-         /(O) \\   _,.-.,_)
-        //  \\ `\'`      /
-  jgs  / |  ||   `""""~"`
-     /'  |__||
-           `o
-```
-
-## **FazendAPI | Node.js API + TypeScript**
-
-Índice
-
-1. Database Configuration - Docker & TypeORM
-2. Routes Configuration - Auth & Token
-
-## **Database Configuration**
-
-Docker + TypeORM
-
-O **Docker** é um container de banco de dados relacional.
-
-Através de uma interface visual é possível acessar o banco de dados relacionado a esse container e ter acesso à todas as tabelas e informações contidas no banco.
-
-Abaixo o arquivo que faz a configuração do ORM com o banco relacional PostgreSQL.
-
-~ **ormconfig.json**
-
-```json
-{
-  "type": "postgres",
-  "host": "localhost",
-  "port": 5432,
-  "username": "user",
-  "password": "password",
-  "database": "dbname",
-  "entities": [
-    "./src/modules/**/infra/typeorm/entities/*.ts"
-  ],
-  "migrations": [
-    "./src/shared/infra/typeorm/migrations/*.ts"
-  ],
-  "cli": {
-    "migrationsDir": "./src/shared/infra/typeorm/migrations"
-  }
-}
+            _
+           H||
+           H||
+ __________H||___________
+[|.......................|
+||.........## --.#.......|
+||.........   #  # ......|            @@@@
+||.........     *  ......|          @@@@@@@
+||........     -^........|   ,      - @@@@
+||.....##\        .......|   |     '_ @@@
+||....#####     /###.....|   |     __\@ \@
+||....########\ \((#.....|  _\\  (/ ) @\_/)____
+||..####,   ))/ ##.......|   |(__/ /     /|% #/
+||..#####      '####.....|    \___/ ----/_|-*/
+||..#####\____/#####.....|       ,:   '(
+||...######..######......|       |:     \
+||.....""""  """"...b'ger|       |:      )
+[|_______________________|       |:      |
+       H||_______H||             |_____,_|
+       H||________\|              |   / (
+       H||       H||              |  /\  )
+       H||       H||              (  \| /
+      _H||_______H||__            |  /'=.
+    H|________________|           '=>/  \
+                                 /  \ /|/
+                               ,___/|
 ```
 
+#### O projeto consiste no sistema de cadastro e mantenimento de artesãos e suas ferramentas, produtos e workshops.
 
-O **TypeORM** fornece diversas maneiras para lidar com as informações no banco.
-Como por exemplo, criar uma tabela, cadastrar chaves estrangeiras para relacionamento entre tabelas; E todas outras operações.
 
-```jsx
-// Certifique-se de configurar o arquivo ormconfig-json.
-// Certifique-se de estar rodando o banco de dados.
-```
+## Node.js API + TypeScript
 
-Cadastrando uma nova Entidade:
+<p align="center">  <a href="#objetivo">Objetivo</a> • <a href="#roadmap">Roadmap</a> • <a href="#tecnologias">Tecnologias</a> • <a href="#tecnologias">Running Locally</a>
 
-1. Configurar uma **migration**. Em ***@*shared/typeorm**
-2. Criar a entidade (Object-Model). Em **@modules/***artisans***/infra/typeorm/entities**
+<h4 align="center"> 🚧 ArtisansAPI 🚀 Projeto em Construção... 🚧 </h4>
 
-Veja mais sobre as **migrations e models** do **typeorm** na **documentação**. [https://typeorm.io/](https://typeorm.io/)
+### Running Locally | Pré-requisitos
+Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas: [Node.js]([https://nodejs.org/en/](https://nodejs.org/en/)) e [Yarn](https://yarnpkg.com/) (ou npm).
+Além disso é importante ter um container [Docker](https://www.docker.com/) rodando o banco de dados postgreSQL
 
-### Exemplo de Entity (Object-Model)
+### 🎲 Rodando o Back End (servidor)
 
-```tsx
- import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-} from "typeorm";
+<b>Clone the repository to your machine then Download the Dependencies:</b>
 
-@Entity("artisans")
-class Artisan {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
+<p>To install dependencies go to the root of the project and run:</p>
 
-  @Column()
-  name: string;
+- `yarn`
 
-  @Column()
-  email: string;
+<b>Executing the project on development stage:</b>
 
-  @Column()
-  password: string;
+- `yarn dev:server`
 
-  @CreateDateColumn()
-  created_at: Date;
+<b>Running the tests cases:</b>
 
-  @UpdateDateColumn()
-  updated_at: Date;
-}
+- `yarn test`
 
-export default Artisan;
-```
 
----
+### 🛠 Technologies
+As seguintes ferramentas foram usadas na construção do projeto:
+- [Node.js]([https://nodejs.org/en/](https://nodejs.org/en/))
+- [TypeScript]([https://www.typescriptlang.org/](https://www.typescriptlang.org/))
+- [TypeORM](https://typeorm.io/#/)
+- [ExpressJS](https://expressjs.com/pt-br/)
+- [ESLint](https://eslint.org/)
+- [Prettier](https://prettier.io/)
+- [bcryptjs](https://www.npmjs.com/package/bcryptjs) (criptografia)
+- [jsonwebtoken](https://jwt.io/) (autenticação)
+- [PostgreSQL](https://www.postgresql.org/)
+- [TSyringe](https://github.com/microsoft/tsyringe) (dependency injection)
+- [Jest](https://jestjs.io/) (Testes)
 
-## **Routes Configuration**
 
-**Autenticação**: (AuthService + sessions.routes + authConfig)
 
-```tsx
-// Veja @modules/artisans/services/authenticateService.ts
-// Veja @~artisans/infra/http/routes/sessions.routes.ts
-// Veja ~config/auth-example.ts
-```
-
-**authenticateService.ts**
-
-```tsx
-import { compare } from "bcryptjs"; // verificar
-import { sign } from "jsonwebtoken"; // gerando token
-import authConfig from "@config/auth"; // configuração básica do token
-
-// ~~~ example
-		.
-		.
-	const trustedPassword = await compare(password, artisan.password);
-
-    if (!trustedPassword) {
-      throw new AppError("Authentication Error", 401);
-    }
-
-    const { secret, expiresIn } = authConfig.jwt;
-
-    const token = sign({}, secret, {
-      subject: artisan.id,
-      expiresIn,
-    });
-
-    return {
-      artisan,
-      token,
-    };
-```
-
-```json
-// Configuração do auth token
-export default {
-  jwt: {
-    secret: "9cb9ce5bd9e807867d42a740c963f323",
-    expiresIn: "2d",
-  },
-};
-```
-
-E a rota de **sessões utiliza do service de Authenticate.**
-
-```tsx
-// sessions.routes.ts
-import { Router } from "express";
-
-import AuthenticateUserService from "@modules/artisans/services/AuthenticateService";
-
-const sessionsRouter = Router();
-
-sessionsRouter.post("/", async (request, response) => {
-  const { email, password } = request.body;
-
-  const authenticate = new AuthenticateUserService();
-
-  const { artisan, token } = await authenticate.execute({
-    email,
-    password,
-  });
-
-  delete artisan.password;
-
-  return response.json({ artisan, token });
-});
-
-export default sessionsRouter;
-```
-
-ASCII ART Credits: ***Joan Stark***
-
-**Entities**
-
-Artisans / Equipments / Workshop / Products / Categories
+ASCII ART Credits: Joris Bellenger
+**API Entities**
+**Artisans** / Equipments / Workshop / Products / Categories
