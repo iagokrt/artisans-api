@@ -1,9 +1,10 @@
-import { getRepository } from "typeorm";
+import { injectable, inject } from "tsyringe";
 import { hash } from "bcryptjs";
 
 import AppError from "@shared/errors/AppError";
 
 import Artisan from "../infra/typeorm/entities/Artisan";
+import IArtisansRepository from "../repositories/IArtisansRepository";
 
 interface Request {
   name: string;
@@ -13,7 +14,13 @@ interface Request {
   birthday: Date;
 }
 
+@injectable()
 class CreateArtisanService {
+  constructor(
+    @inject("ArtisansRepository")
+    private artisansRepository: IArtisansRepository
+  ) {}
+
   public async execute({
     name,
     email,
@@ -21,11 +28,9 @@ class CreateArtisanService {
     cpf,
     birthday,
   }: Request): Promise<Artisan> {
-    const artisanEntity = getRepository(Artisan);
-
-    const checkDuplicateEmail = await artisanEntity.findOne({
-      where: { email },
-    });
+    const checkDuplicateEmail = await this.artisansRepository.findByEmail(
+      email
+    );
 
     if (checkDuplicateEmail) {
       throw new AppError("Email is already in use");
@@ -33,7 +38,7 @@ class CreateArtisanService {
 
     const bcryptedPassword = await hash(password, 8);
 
-    const user = artisanEntity.create({
+    const artisan = await this.artisansRepository.create({
       name,
       email,
       password: bcryptedPassword,
@@ -41,9 +46,7 @@ class CreateArtisanService {
       birthday,
     });
 
-    await artisanEntity.save(user);
-
-    return user;
+    return artisan;
   }
 }
 

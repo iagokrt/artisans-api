@@ -1,22 +1,10 @@
 import { Router } from "express";
 
-import AuthenticateUserService from "@modules/artisans/services/AuthenticateService";
+import SessionsController from "../controllers/SessionsController";
 
 const sessionsRouter = Router();
+const sessionsController = new SessionsController();
 
-sessionsRouter.post("/", async (request, response) => {
-  const { email, password } = request.body;
-
-  const authenticate = new AuthenticateUserService();
-
-  const { artisan, token } = await authenticate.execute({
-    email,
-    password,
-  });
-
-  delete artisan.password;
-
-  return response.json({ artisan, token });
-});
+sessionsRouter.post("/", sessionsController.create);
 
 export default sessionsRouter;

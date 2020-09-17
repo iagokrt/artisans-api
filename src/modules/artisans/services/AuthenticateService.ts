@@ -1,11 +1,10 @@
-import { getRepository } from "typeorm";
+import { injectable, inject } from "tsyringe";
 import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import authConfig from "@config/auth";
-
 import AppError from "@shared/errors/AppError";
-
 import Artisan from "../infra/typeorm/entities/Artisan";
+import IArtisansRepository from "../repositories/IArtisansRepository";
 
 interface Request {
   email: string;
@@ -17,13 +16,15 @@ interface Response {
   token: string;
 }
 
+@injectable()
 class AuthenticateService {
-  public async execute({ email, password }: Request): Promise<Response> {
-    const artisanEntity = getRepository(Artisan);
+  constructor(
+    @inject("ArtisansRepository")
+    private artisansRepository: IArtisansRepository
+  ) {}
 
-    const artisan = await artisanEntity.findOne({
-      where: { email },
-    });
+  public async execute({ email, password }: Request): Promise<Response> {
+    const artisan = await this.artisansRepository.findByEmail(email);
 
     if (!artisan) {
       throw new AppError("Authentication Error", 401);
